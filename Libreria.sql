@@ -144,7 +144,8 @@ UPDATE usuarios
     WHERE nombre = 'Juliana Gabilda' 
 
 --23)CAMPO CON ATRIBUTO identity: se aplica a campos numéricos enteros para que estos sean autonuméricos o autogenerados
---produciendo valores únicos, solo puede haber un campo con identity, codificar:
+--produciendo valores únicos, solo puede haber un campo con identity, codificar:
+
 CREATE TABLE libros2(
 codigo int identity,
 titulo varchar(40) not null,
@@ -248,12 +249,16 @@ truncate table libros3;
 sp_tables @table_owner='dbo';
 
 --41)Insertar cinco registros en libros3 usar: insert…
-INSERT INTO Libros3(titulo, autor, editorial,precio) VALUES
+
+INSERT INTO Libros3(titulo, autor, editorial,precio) VALUES
 ('Rich Dad Poor Dad','Robert T. Kiyosaki','Sirio', 125),
 ('El millonario de la puerta de al lado','Thomas J. Stanley','Sirio',115),
 ('Los secretos de la mente millonaria','T.Harv Eker','Sirio',99),
 ('El hombre más rico de Babilonia','George S Clason','SBS',180),
-('El Tao de Warren Buffett','Warren Buffett','Sirio',200)--42)Ver los registros grabados en libros3 usar: select…
+('El Tao de Warren Buffett','Warren Buffett','Sirio',200)
+
+--42)Ver los registros grabados en libros3 usar: select…
+
 SELECT * FROM libros3
 
 ---------------------------------------------------------------------------------------------------------------
@@ -986,3 +991,6 @@ select * from libros where (autor='Borges') or(editorial='Paidos' and precio<20)
 select * from libros where (autor='Borges' or editorial='Paidos') and (precio<20);
 select * from libros where editorial is null; -- observar resultado con la siguiente
 select * from libros where editorial is not null;
+
+
+
