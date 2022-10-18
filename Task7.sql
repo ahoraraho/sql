@@ -63,7 +63,7 @@ exec sp_helpconstraint alumnos;
 
 --eliminar restricciones (alter table TABLA drop RESTRICCION)
 
-alter table TABLA drop RESTRICCION
+alter table alumnos drop RESTRICCION
 
 --eliminar restricción default de ciudad
 
@@ -97,6 +97,9 @@ Sp_help;
 
 Sp_helpconstraint alumnos;
 
+--eliminar dicah rectriccion
+Alter table alumnos drop RG_dni_patron;
+
 --insertar un registro con dni= 22bb3388
 
 insert into alumnos values 
@@ -119,7 +122,7 @@ insert into alumnos values
 --insertar un registro con dni= 22113287
 
 insert into alumnos values 
-('F106','Margoro','Gabriela','22bc3389','Av. EEUU','Arequipa',18)
+('F107','Lucas','Gabriela','22113287','Av. EEUU','Arequipa',19)
 
 --ver todos los registros
 
@@ -138,10 +141,15 @@ Exec sp_bindefault VP_dni, 'alumnos.dni';
 
 --insertar un registro con valores default
 
-
+insert into alumnos values 
+('F108','Lucas','Gabriela','54','Av. EEUU','Cusco',20)
 
 --ver si VP_dni existe
 
+SELECT
+    * 
+    FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS 
+    WHERE CONSTRAINT_NAME ='VP_dni'
 
 --ver los valores predeterminados asociados
 
@@ -149,7 +157,7 @@ Sp_helpconstraint alumnos;
 
 --ver todos los registros
 
-
+select * from alumnos
 
 --ver el texto del valor
 
@@ -161,4 +169,9 @@ Sp_help;
 
 --desasociar un valor con: sp_unbindefault ‘TABLA.CAMPO’;
 
+sp_unbindefault 'alumnos.dni';
+
 --eliminar el valor predeterminado con : drop default VP_NOMBREVALPRED
+
+
+ drop default VP_dni

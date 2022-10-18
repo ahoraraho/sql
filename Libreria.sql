@@ -29,6 +29,7 @@ ALTER TABLE Libros ALTER COLUMN autor varchar(100);
 --null; usar: insert into NOMBRETABLA(campos) values(datos)
 
 INSERT INTO Libros(titulo, autor, editorial,precio) VALUES
+
 ('Rich Dad Poor Dad','Robert T. Kiyosaki','Sirio', null),
 ('El millonario de la puerta de al lado','Thomas J. Stanley','Sirio',115),
 ('Los secretos de la mente millonaria','T.Harv Eker','Sirio',99),

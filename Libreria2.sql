@@ -198,4 +198,4 @@ group by sexo,estadocivil,seccion with rollup;
 --ver registros agrupados ... con cube
 
 select sexo,estadocivil,seccion,count(*) from empleados
-group by sexo,estadocivil,seccion with cube;
+group by sexo,estadocivil,seccion with cube;
