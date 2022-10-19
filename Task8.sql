@@ -10,6 +10,8 @@ autor varchar(100) not null,
 editorial varchar(50) null, 
 precio float 
 );
+
+
 --crear un índice agrupado único para el campo codigo
 create unique clustered index I_libros_codigo on libros(codigo);
 --crear un índice no agrupado para el campo titulo
@@ -198,8 +200,11 @@ create table libros(
 codigo int not null,
 Titulo varchar(40),
 Autor varchar(30),
-Codigoeditorial tinyint
-);
+Codigoeditorial tinyint,
+precio decimal(4,2)
+)
+
+
 
 if object_id('editoriales') is not null
 drop table editoriales;
@@ -221,65 +226,80 @@ INSERT INTO editoriales(codigo, nombre) VALUES
 
 --Ingresar datos a tabla libros
 
-INSERT INTO Libros(codigo, titulo, autor, codigoeditorial) VALUES
-(1,'c++','Ceballos',1),
-(2,'php','Molina',1),
-(3,'java','Cuba',2),
-(4,'python','martin',4),
-(5,'Rich Dad Poor Dad','Robert T. Kiyosaki',1),
-(6,'El millonario de la puerta de al lado','Thomas J. Stanley',2)
+INSERT INTO libros(codigo, titulo, autor, Codigoeditorial, precio) VALUES
+(1,'c++','Ceballos',1,35),
+(2,'php','Molina',1,30),
+(3,'java','Cuba',2,40),
+(4,'python','martin',3,25),
+(5,'Rich Dad Poor Dad','Robert T. Kiyosaki',4,99),
+(6,'El millonario de la puerta de al lado','Thomas J. Stanley',5,95)
+
+
+select * from editoriales
 
 --Agregar la restricción foreing key a tabla libros:
 Alter table libros add constraint FK_libros_codigoeditorial foreign key (codigoeditorial) references editoriales(codigo);
 --Ingresar dos nuevos libros a tabla libros
 
-INSERT INTO Libros(codigo, titulo, autor, codigoeditorial) VALUES
-(7,'Los secretos de la mente millonaria','T.Harv Eker',3),
-(8,'El hombre más rico de Babilonia','George S Clason',4)
+INSERT INTO Libros(codigo, titulo, autor, codigoeditorial, precio) VALUES
+(7,'Los secretos de la mente millonaria','T.Harv Eker',6, 89),
+(8,'El hombre más rico de Babilonia','George S Clason',3, 85)
 
---Crear una consulta titulo,autor,nombre de editorial,precio
+--Crear una consulta titulo,autor,nombre de editorial
+
+Select titulo,autor,e.nombre from libros as l join editoriales as e on l.codigoeditorial=e.codigo;
 
 --Integridad referencial eliminación, actualización en cascada con foreing key sintaxis:alter table TABLA1 add constraint
-NOMBRERESTRICCION foreing key (CAMPOCLAVEFORANEA) references TABLA2(CAMPOCLAVEPRIMARIA) on delete
-OPCION on update OPCION;
+--NOMBRERESTRICCION foreing key (CAMPOCLAVEFORANEA) references TABLA2(CAMPOCLAVEPRIMARIA) on delete
+--OPCION on update OPCION;
 --Tomando la librería y sus tablas libros y editoriales; crear una restricción foreing key para evitar que se ingresen en la tabla libros
-un codigo de editorial inexistente en la tabla editoriales con la opción on cascade para actualizaciones y eliminaciones:
-Alter table libros add constraint FK_libros_codigoeditorial foreing key (codigoeditorial) references editoriales(codigo) on update
+--un codigo de editorial inexistente en la tabla editoriales con la opción on cascade para actualizaciones y eliminaciones:
+Alter table libros add constraint FK_libros_codigoeditorial_up foreign key (codigoeditorial) references editoriales(codigo) on update
 cascade on delete cascade;
 --ver todos los registros combinados de libros y editoriales
+
+select * from libros L join editoriales E on L.codigoeditorial = E.codigo 
 --actualizar en editoriales codigo de 1 a 10
 Update editoriales set codigo=10 where codigo=1;
 --ver efectos de actualización en cascade
-Select titulo,autor, e.codigo, nombre from libros as l join editoriales as e on codigoeditoria=e.codigo;
+Select titulo,autor, e.codigo, nombre from libros as l join editoriales as e on codigoeditorial=e.codigo;
 --eliminar una editorial en cascade por codigo
 Delete from editoriales where codigo=2;
 --ver efectos de eliminacion en cascade
-Select titulo,autor, e.codigo, nombre from libros as l join editoriales as e on codigoeditoria=e.codigo;
---ver información de restricciones en especial de foreing key, ejecute el procedimiento almacenado sp_helpconstraint
+Select titulo,autor, e.codigo, nombre from libros as l join editoriales as e on codigoeditorial=e.codigo;
+--ver información de restricciones en especial de foreing key, ejecute el procedimiento almacenado 
+sp_helpconstraint libros;
 --Agregar y eliminar campos en una tabla, modificando por tanto su estructura:
 --Agregar sintaxis: alter table NOMBRETABLA add NOMBRENUEVOCAMPO DEFINICION;
 --Eliminar campos sintaxis: alter table NOMBRETABLA drop column NOMBRECAMPO;
 --Agregar el campo cantidad a la tabla libros anterior
-Alter table libros addd cantidad tinyint;
---verifique la estructura de la tabla con sp_columns libros;
+Alter table libros add cantidad tinyint;
+--verifique la estructura de la tabla con 
+sp_columns libros;
 --eliminar el campo cantidad
 Alter table libros drop column cantidad;
+
 --ver la nueva estructura de la tabla
 
-/*6)Subconsultas(subquery) es una sentencia select anidada en otra sentencia select, insert, update,, delete; se aplica cuando una
-, consulta es muy compleja, entonces se la divide en varios pasos lógicos; ejecute las subconsultas:
-Select titulo, precio, precio - (select max(precio) form libros) as Diferencia from libros where titulo='Php';
-Update libros set precio=55 where precio=(select max(precio) from libros);*/
+sp_columns libros;
 
---ver los libros
+/*6)Subconsultas(subquery) es una sentencia select anidada en otra sentencia select, insert, update,, delete; se aplica cuando una
+, consulta es muy compleja, entonces se la divide en varios pasos lógicos; ejecute las subconsultas:*/
+
+Select titulo, precio, precio - (select max(precio) from libros) as Diferencia from libros where titulo='Php';
+
+Update libros set precio=55 where precio=(select max(precio) from libros);
+
+--eliminamos la fila que del libro que tiene el precio minimo
 Delete from libros where precio=(select min(precio) from libros);
 --ver los libros
+select * from libros
 
 
 --7)Crear una tabla a partir de otra, sintaxis: select CAMPOSNUEVATABLA into NUEVATABLA from TABLA where CONDICION;
 --crear tabla autores a partir de libros
 
-Select distinta autor as nombres into autores from libros;
+Select distinct autor as nombres into autores from libros;
 
 --Ver contenido de la nueva tabla
 
@@ -294,8 +314,10 @@ consulta, las tablas consultadas en una vista se llaman tablas base, sintaxis: c
 from TABLA;*/
 --crear una vista a partir de una consulta
 
-create view vista_libros as Select titulo,autor, e.codigo, nombre from libros as l join editoriales as e on codigoeditoria=e.codigo;
---ver la información de la vista
+create view vista_libros AS 
+Select titulo,autor, e.codigo, nombre 
+from libros as l join editoriales as e on codigoeditorial=e.codigo;
+--ejercutar la vista
 Select * from vista_libros;
 --ver información de la vista
 Sp_help vista_libros;
@@ -304,11 +326,28 @@ Sp_helptext vista_libros;
 
 drop view vista_libros
 
-
 /*9)Lenguaje de control de flujo(case): compara dos o más valores y devuelve un resultado, aplicar la sintaxis:
 case VALORACOMPARAR when VALOR1 then RESULTADO1 when VALOR2 then RESULTADO2 …. Else RESULTADOn end*/
+
 --elimine la tabla alumnos y vuelva a crearla e ingrese datos
 
+if object_id('alumnos') is not null
+drop table alumnos;
+
+--creamos la tabla
+create table alumnos(
+nombre varchar(50) not null,
+nota int not null
+);
+--insertamos datos
+insert into alumnos values
+('Erick',7),
+('Rosa',10),
+('Pedro',5),
+('Maria',11),
+('Carlos',15),
+('Sheyla',20),
+('Raul',8)
 
 --aplicar case en una consulta
 Select nombre,nota, condición=
@@ -346,10 +385,13 @@ When nota>12 then 'Promovido aprobado'
 Else 'Mala nota'
 End
 From alumnos;
+
 --Agregar el campo condición varchar(20) a la tabla alumnos
 
+Alter table alumnos add condicion varchar(20);
+
 --Actualizar el campo condición
-Update alumnos set condición=
+Update alumnos set condicion=
 Case
 When nota<10 then 'Repite'
 When nota>=10 and nota<=12 then 'Recupera'
@@ -358,6 +400,7 @@ Else 'Mala nota'
 End;
 --ver los datos de la tabla
 
+select * from alumnos
 
 /*10)Procedimientos almacenados (create procedure): se crean en la base de datos seleccionada, contienen varias instrucciones;
 pueden hacer referencia a tablas, vistas, funciones definidas por el usuario, otros procedimientos, etc. Aplicar la sintaxis: create
@@ -367,23 +410,22 @@ procedure NOMBREPROCEDIMIENTO as INSTRUCCIONES;*/
 
 create procedure pa_crear_alumnos2
 As
+If object_id('alumnos2') is not null
+Drop table alumnos2
 
-
-If object_id('alumnos') is not null
-
-Drop table alumnos
-create table alumnos(
+create table alumnos2(
 Nombre varchar(30),
 Nota tinyint
 )
-Insert into alumnos values('Rosa',9)
-Insert into alumnos values('Pedro',17);
+Insert into alumnos2 values('Rosa',9)
+Insert into alumnos2 values('Pedro',17);
 
 --fin del procedimiento—ejecutar el procedimiento
 
 Exec pa_crear_alumnos2;
 
 --ver si se creó la tabla alumnos2 listando datos
+select * from alumnos2
 --ver información del procedimiento
 
 Sp_help pa_crear_alumnos2;
@@ -395,26 +437,97 @@ referencial y la coherencia entre los datos de las diferentes tablas; estos se e
 update,delete; sintaxis: create triggre NOMBREDISPARADOR on NOMBRETABLA for EVENTO – insert,update,delete- as
 SENTENCIAS;*/
 --crear un disparador para las tablas de la librería; eliminar la tabla libros, eliminar la tabla ventas
-If..
-..crear la tabla libros con primary key (codigo)
+--eliminar la tabla libros
+if object_id('libros') is not null
+drop table libros;
+
+--eliminar la tabla ventas si es que existe
+if OBJECT_ID('ventas') is not null
+drop table ventas
+
+--crear la tabla libros
+CREATE TABLE libros(
+codigo int identity primary key not null,
+titulo varchar(100) not null, 
+autor varchar(100) not null, 
+editorial varchar(50) null, 
+precio decimal(6,2),
+stock int
+);
+
+--insertar datos para poder hacer las pruevas
+
+INSERT INTO Libros(titulo, autor, editorial,precio, stock) VALUES
+('c++','Ceballos','alfa',35,35),
+('php','Molina','delta',30,30),
+('java','Cuba','gama',40,40),
+('python','martin','gona',25,25),
+('Rich Dad Poor Dad','Robert T. Kiyosaki','sirio',1, 99),
+('El millonario de la puerta de al lado','Thomas J. Stanley','sbs',2,115),
+('Los secretos de la mente millonaria','T.Harv Eker','worbwns',3,99),
+('El hombre más rico de Babilonia','George S Clason','sirio',4,180)
+
 
 --crear la tabla ventas, con primary key (numero), constraint FK_ventas_codigolibro, foreing key (codigolibro) references
-libros(codigo) on delete no action);
+--libros(codigo) on delete no action);
+
+create table ventas(
+numero int identity primary key,
+fecha datetime,
+codigolibro int not null foreign key references libros(codigo),
+precio decimal(6,2),
+cantidad int
+);
+
+
 --Insertar mínimo tres registros
 
 
---crear disparadores para actualizar el campo stock
-create trigger DIS_ventas_borrar
-On ventas
-For delete
+
+--crear disparadores para actualizar el campo stock de la tabla libro, al borrar la venta se 
+--asignara el numero de libros debueltos.
+create trigger TR_ventas_borrar
+On ventas For delete
 As
-Update libros set stock=libros.stock+deleted.cantidad
+Update libros set stock = libros.stock + deleted.cantidad
 From libros
 Join deleted
 On deleted.codigolibro=libros.codigo;
 
+--al momento de hacer una venta, se resta la cantidad de libros vendida
+create trigger TR_ventas_vender
+on ventas for insert
+AS
+update libros set libros.stock = libros.stock - inserted.cantidad 
+from inserted inner join libros
+on libros.codigo = inserted.codigolibro
+go
+
+--primero vemos la tabla libros, espesificamente en el campo stock con el codigo 1
+select * from libros
+--Ahora, supongamos que hacemos una venta y se registra una venta en la tabla del mismo nombre
+
+insert into ventas(fecha, codigolibro, precio, cantidad) values (18-10-2022,1,35,5)
+
+insert into ventas(fecha, codigolibro, precio, cantidad) values (18-10-2022,5,310,10)
+
+--verificamos que el registro se aya registrado en la tabla ventas
+
+select * from ventas
+
+--vemos que en la tabla libros se resto en el campo stock la cantidad vendida
+
+select * from libros
+
+--RESTAURAMOS la venta de un libro en la tabla ventas
 --eliminamos un registro
 
 Delete from ventas where numero=2;
 
 --verifique que el registro se elimino
+
+select * from Ventas
+
+--verificamos que en la tabla libros se aya restaurado
+
+select * from libros
