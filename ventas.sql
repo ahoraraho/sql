@@ -1,6 +1,6 @@
-CREATE DATABASE VENTAS
+CREATE DATABASE Aranco
 
-USE VENTAS
+USE Aranco
 
 CREATE TABLE Proveedor	
 (
@@ -12,12 +12,7 @@ telprovee	varchar(9) NOT NULL,
 mailprovee	varchar(128) NOT NULL,
 )
  /*-----------------------------------------------------*/
-CREATE TABLE DistritosVentas
-(
-Iddistrito	int NOT NULL PRIMARY KEY ,
-Nomdistrito	varchar(128),
-Ubigeo	varchar(6)
-)
+
 
 CREATE TABLE Categorias	
 (
@@ -32,7 +27,7 @@ idusuario int	PRIMARY KEY IDENTITY,
 loginn	varchar(15),
 Ape	varchar(64),
 Nom	varchar(64),
-password	varchar(128),
+password varchar(128),
 email	varchar(128),
 estado	varchar(2)
 )
@@ -43,13 +38,19 @@ Idtipo	int	PRIMARY KEY IDENTITY,
 Nomtipo	varchar(25) NOT NULL
 )
 
-
 CREATE TABLE Ubigeo	
 (
 idubigeo	varchar(6) PRIMARY KEY,
 nomdistrito	varchar(128),
 idprovincia	varchar(4),
 iddepto	varchar(2)
+)
+
+CREATE TABLE DistritosVentas
+(
+Iddistrito	int NOT NULL PRIMARY KEY ,
+Nomdistrito	varchar(128),
+Ubigeo	varchar(6) Foreign key References Ubigeo(idubigeo),
 )
 
 
@@ -112,3 +113,32 @@ cosuni	decimal(10,4) NOT NULL,
 preuni	decimal(10,4) NOT NULL,
 canttidad int NOT NULL,
 )
+
+
+--1.- Ingrese al SSMS		
+
+
+
+--2.- Proceda a crear la base de datos Ventas y las tablas respectivas, añada registros a las tablas mediante 								
+     --la instrucción INSERT a cada una de ellas
+	 
+
+
+--3.- Cree un login y un usuario para acceder a la base de datos ventas. (el usuario debe tener derechos de 								
+      --administracion y podra hacerlo solo en la base de datos Ventas)	
+	  
+
+
+--4.- Crear un login y usuario que pueda acceder a la base de datos Ventas y solo pueda realizar consultas								
+      --a las tablas ventas y detalleVentas	
+	  
+
+
+--5.- Realizar una tarea en el Agente de SQL server para realizar una consulta y grabarla en una carpeta en el								
+      --disco duro donde se debe visualizar a partir de las 10 pm el listado de ventas del dia.								
+      --Fecha, Nomcliente, Tipo, Importe, IGV, Ape, Nom (usuario que registro la venta)		
+	  
+
+
+--6.- Realizar una tarea en el Agente de SQL server para realizar una consulta de los productos vendidos en								
+      --en el dia en cantidades y precios de venta. La tarea debe correr los viernes a las 9.00 pm								
