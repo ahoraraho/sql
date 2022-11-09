@@ -197,11 +197,8 @@ INSERT INTO Ventas(fecha, idcliente, Idtipo, Nrodocumento, Idusuario, Importe, I
 
 
 INSERT INTO Producto(Nomprodu, Unimed, StockProdu, Cosuni, Preuni, StockMin, StockMax, idcategoria, estado) VALUES
-('','',1,1,2,3,1000,'',''),
-('','',1,1,2,3,1000,'',''),
-('','',1,1,2,3,1000,'',''),
-('','',1,1,2,3,1000,'',''),
-('','',1,1,2,3,1000,'','')
+('Samsung S 22 Ultra','unidades',50,5999,5999,1,250,1,'1'),
+
 
 
 
