@@ -197,12 +197,13 @@ INSERT INTO Ventas(fecha, idcliente, Idtipo, Nrodocumento, Idusuario, Importe, I
 
 
 INSERT INTO Producto(Nomprodu, Unimed, StockProdu, Cosuni, Preuni, StockMin, StockMax, idcategoria, estado) VALUES
-(NOM)
-('DIARIO',5,2,1,1,3,299,'C02'),
-('DIARIO',6,5,1,1,5,999,'C01'),
-('DIARIO',7,1,1,1,2,359,'C03'),
-('DIARIO',2,2,1,0,2,159,'C02'),
-('DIARIO',3,2,1,1,3,99,'C04')
+('','',1,1,2,3,1000,'',''),
+('','',1,1,2,3,1000,'',''),
+('','',1,1,2,3,1000,'',''),
+('','',1,1,2,3,1000,'',''),
+('','',1,1,2,3,1000,'','')
+
+
 
 INSERT INTO DetalleVentas(idventa, idproducto, cosuni, preuni, canttidad) VALUES
 (1,1,'','','');
