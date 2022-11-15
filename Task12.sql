@@ -1,11 +1,11 @@
-/*EncriptaciÛn y Des encriptaciÛn de base de datos SQL Server 
+/*Encriptaci√≥n y Des encriptaci√≥n de base de datos SQL Server 
 A.- PassPhrase 
-Este tipo de cifrado muestra la forma m·s sencilla y b·sica de encriptar los datos con SQL Server, 
-a travÈs de su mecanismo, se hace la encriptaciÛn de alg˙n tipo de palabra o contraseÒa ìaseguradaî 
-sin nada m·s, uno de los problemas es que no existe seguridad en la contraseÒa no exige mecanismos 
-de contraseÒa segura, si la contraseÒa es expuesta se pierde toda la seguridad. Existe otra posibilidad 
-de problema con esta metodologÌa, es que puede que no todos los datos de una columna sean encriptados 
-con la misma clave, Èste es el problema que trae este mecanismo con lo cual la informaciÛn quedarÌa 
+Este tipo de cifrado muestra la forma m√°s sencilla y b√°sica de encriptar los datos con SQL Server, 
+a trav√©s de su mecanismo, se hace la encriptaci√≥n de alg√∫n tipo de palabra o contrase√±a ‚Äúasegurada‚Äù 
+sin nada m√°s, uno de los problemas es que no existe seguridad en la contrase√±a no exige mecanismos 
+de contrase√±a segura, si la contrase√±a es expuesta se pierde toda la seguridad. Existe otra posibilidad 
+de problema con esta metodolog√≠a, es que puede que no todos los datos de una columna sean encriptados 
+con la misma clave, √©ste es el problema que trae este mecanismo con lo cual la informaci√≥n quedar√≠a 
 irrecuperable, ejemplo*/
 
 --primero se limpia el ambiente
@@ -33,3 +33,4 @@ CodCliente int not null identity(1,1),
 Nombres varchar
 )
 
+--alan edito el codigo
