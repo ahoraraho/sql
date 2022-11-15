@@ -32,3 +32,4 @@ create table cliente
 CodCliente int not null identity(1,1),
 Nombres varchar
 )
+
